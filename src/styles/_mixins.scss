@@ -1,0 +1,93 @@
+@mixin button ($my-color) {
+    background: linear-gradient($my-color, lighten($my-color, 10%));
+    color: darken($my-color, 20%);
+    border: 2px solid darken($my-color, 10%);
+    box-shadow: inset 0 5px 5px lighten($my-color, 20%);
+}
+
+@mixin uppercase-letter-spacing {
+    text-transform: uppercase;
+    letter-spacing: 10px;
+}
+
+@mixin hover-focus-active {
+    &:hover,
+    &:focus,
+    &:active {
+        @content;
+    }
+}
+
+@mixin selection($background, $foreground: #fff) {
+    ::-moz-selection {
+        background: $background;
+        color: $foreground;
+        text-shadow: none;
+    }
+    ::selection {
+        background: $background;
+        color: $foreground;
+        text-shadow: none;
+    }
+}
+
+@mixin form-input-placeholder {
+    &::-webkit-input-placeholder {@content};
+    &::-moz-input-placeholder {@content};
+    &::-moz-placeholder {@content};
+    &::-ms-input-placeholder {@content};
+}
+
+@mixin center-hor-ver {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+@mixin center-ver {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%);
+}
+
+@mixin visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+    clip: rect(0, 0, 0, 0);
+}
+
+// @mixin animation($name, $duration, $delay: null, $iteration: null, $direction: null, $fill-mode: null, $timing: null) {
+//     @keyframes #{ $name } {
+//         @content;
+//     }
+//     animation-name: $name;
+//     animation-duration: $duration;
+//     animation-delay: $delay;
+//     animation-iteration-count: $iteration;
+//     animation-direction: $direction;
+//     animation-fill-mode: $fill-mode;
+//     animation-timing-function: $timing;
+// }
+
+@mixin animation($name, $properties...) {
+    @keyframes #{ $name } {
+        @content;
+    }
+    animation-name: $name;
+    animation: $properties;
+}
+
+// media-query mixins:
+@mixin respond-to( $value, $property: 'max-width' ) {
+    $value: px-to-rem($value);
+    @media screen and ( #{$property}: #{$value} ) {
+        @content;
+    }
+}
+

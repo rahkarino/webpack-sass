@@ -1,0 +1,446 @@
+$my-color: rgb(31, 142, 161);
+$w1: 5em;
+$w2: 10rem;
+$img-url: "bg.png";
+$class-selector: "covid19";
+$property-name: "bottom";
+$break-point-500: "500px";
+$min-width-500: "screen and ( min-width: #{$break-point-500} )";
+
+font-face {
+  font-family: "Xolonium";
+  src: url("../fonts/Xolonium-Regular.woff2") format("woff2"),
+    url("../fonts/Xolonium-Regular.woff") format("woff"),
+    url("../fonts/Xolonium-Regular.ttf") format("truetype");
+}
+main {
+  p {
+    color: $my-color;
+  }
+  h1 {
+    font-family: "Xolonium";
+  }
+  .calc-sass {
+    background-color: gray;
+    height: 50px;
+    width: calc(#{$w1} + #{$w2});
+    display: grid;
+    place-content: center;
+    border-radius: 20px;
+    span {
+      color: white;
+    }
+  }
+  .extend-vs-mixin {
+    .uppercase-letter-spacing {
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+    p {
+      @include uppercase-letter-spacing;
+    }
+    // h4 {
+    //   @include uppercase-letter-spacing;
+    // }
+    // p {
+    //   @extend .uppercase-letter-spacing;
+    // }
+    h4 {
+      @extend .uppercase-letter-spacing !optional;
+    }
+  }
+}
+.media {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  padding: 20px;
+  margin: 20px 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  // .media__image
+  &__image {
+    margin-right: 1rem;
+    width: 400px;
+    height: 300px;
+    order: 1;
+    background-color: lighten($my-color, 20%);
+    background-color: darken($my-color, 20%);
+    background-color: grayscale($my-color);
+    background-color: saturate($my-color, 20%);
+    background-color: desaturate($my-color, 20%);
+    background-color: invert($my-color);
+    background-color: complement($my-color);
+    background-color: transparentize($my-color, 0.5);
+    background-color: opacify($my-color, 0.7);
+    background-color: rgba($my-color, 0.2);
+    background-color: saturate((lighten($my-color, 20%)), 40%);
+    // .media.media--flipped .media__image
+    .media--flipped & {
+      margin-left: 1rem;
+      order: 3;
+    }
+  }
+  // .media__content
+  &__content {
+    order: 2;
+    p {
+      color: gray;
+    }
+    .button {
+      font-size: 20px;
+      font-weight: bold;
+      text-decoration: none;
+      padding: 0.5em 2em;
+      @include button(blue);
+      &--pink {
+        @include button(hotpink);
+      }
+    }
+  }
+}
+a.btn {
+  background-color: rgb(209, 193, 49);
+  color: black;
+  & + & {
+    margin-left: 20px;
+  }
+  .dark-theme & {
+    background-color: rgb(68, 68, 68);
+    color: white;
+  }
+}
+.functions {
+  p {
+    font-size: px-to-rem(20px);
+    padding: px-to-rem(15);
+  }
+}
+.mixin {
+  .select-text {
+    @include selection(rgb(165, 50, 50), #ccc);
+  }
+  input {
+    text-align: left;
+    @include form-input-placeholder {
+      color: red;
+      font-style: italic;
+      text-align: right;
+    }
+  }
+  .centering {
+    display: block;
+    height: 200px;
+    background-color: #f0f0f0;
+    position: relative;
+    .hor-ver {
+      @include center-hor-ver;
+    }
+    .ver {
+      @include center-ver;
+    }
+  }
+  .hiding {
+    @include visually-hidden;
+  }
+
+  a {
+    @include hover-focus-active {
+      color: yellow;
+      background-color: black;
+    }
+  }
+}
+
+.interpolation {
+  // background: url('../images/' + $img-url);
+  background: url("../images/#{ $img-url }");
+  width: 300px;
+  height: 300px;
+  p.#{ $class-selector } {
+    color: #ccc;
+    border-#{ $property-name }: 1px solid red;
+  }
+  @media #{$min-width-500} {
+    transform: rotate(30deg);
+  }
+}
+
+.keyframe {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  background: #f0f0f0;
+  .box {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100px;
+    height: 100px;
+    background: rgb(119, 52, 52);
+    @include animation(move, 5s, 0, 4, alternate, forwards, ease) {
+      0% {
+        left: 0;
+      }
+      100% {
+        left: 90%;
+      }
+    }
+  }
+}
+
+.loop {
+  background: gray;
+  width: 0;
+  height: 1em;
+}
+
+// for loop
+@for $i from 1 through 10 {
+  .loop-#{ $i } {
+    width: 10px * $i;
+  }
+}
+// while loop
+$j: 10;
+@while $j > 0 {
+  .loop-#{ $j } {
+    width: 20px * $j;
+  }
+  $j: $j - 2;
+}
+
+// each loop
+$team: "ehsan", "hamid", "ali", "javad";
+@each $name in $team {
+  .avatar-#{ $name } {
+    background-image: url("../images/#{$name}.png");
+  }
+}
+
+// if condition
+$is-visible: true;
+.box {
+  @if $is-visible == true {
+    display: block;
+  } @else {
+    display: none;
+  }
+}
+
+// colors box
+.colors {
+  .color {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 200px;
+    height: 200px;
+    margin: 0.25rem;
+    border: 1px solid #ccc;
+    text-align: center;
+    &:before {
+      content: "color name";
+    }
+    &:after {
+      content: "hex code";
+    }
+  }
+}
+
+// colors display
+$names: "white", "red", "green", "blue", "orange" "black";
+$colors: #fff, #cc3f85, #93b22d, #66d9ef, #ea0, #000;
+$k: 1;
+@each $name in $names {
+  .color--#{ $name } {
+    $color: nth($colors, $k);
+    background: $color;
+
+    @if lightness($color) < 50% {
+      color: #fff;
+    }
+
+    &:before {
+      content: "#{ $name }";
+    }
+    &:after {
+      content: "#{ $color }";
+    }
+  }
+  $k: $k + 1;
+}
+
+// parag colors
+$p: 1;
+$parag-names: "gray", "yellow", "pink", "green";
+$parag-colors: #ccc, rgb(22, 3, 3), #f0f, green;
+@each $name in $parag-names {
+  .color--#{ $name } {
+    $color: nth($parag-colors, $p);
+    color: $color;
+  }
+
+  $p: $p + 1;
+}
+
+// map - sample1
+$font-sizes: (
+  h3: 36px,
+  h4: 32px,
+  h5: 28px,
+  h6: 24px,
+);
+.map {
+  h3 {
+    font-size: map-get($font-sizes, h3);
+  }
+}
+@each $selector, $font-size in $font-sizes {
+  #{ $selector } {
+    font-size: $font-size;
+  }
+}
+
+// map - sample2
+$setting: (
+  media-queries: true,
+  enlarge-text: 120%,
+);
+.map {
+  p {
+    @if map-has-key($setting, enlarge-text) {
+      font-size: map-get($setting, enlarge-text);
+    } @else {
+      font-size: 100%;
+    }
+  }
+}
+
+// map - sample3
+@mixin button($options: ()) {
+  display: inline-block;
+  $setting-default: (
+    color: #ddd,
+    background-color: #222,
+    padding: 0.5em 1em,
+    border-radius: 10px,
+  );
+  $setting-final: merge-map($setting-default, $options);
+  @each $property, $value in $setting-final {
+    #{ $property }: #{$value};
+  }
+}
+.map {
+  button {
+    $option: (
+      color: #fff,
+    );
+    @include button($option);
+  }
+}
+
+// map - sample4 (color box)
+$colors: (
+  gray: #ccc,
+  yellow: yellow,
+  green: #93b22d,
+  blue: #66d9ef,
+  orange: #ea0,
+  black: #000,
+);
+.map {
+  @each $name, $color in $colors {
+    .color--#{ $name } {
+      background: $color;
+      @if lightness($color) < 50% {
+        color: #fff;
+      }
+      &:before {
+        content: "#{ $name }";
+      }
+      &:after {
+        content: "#{ $color }";
+      }
+    }
+  }
+}
+
+.media-query {
+  .mybox {
+    width: 50%;
+    @include respond-to(600px) {
+      width: 100%;
+    }
+    @include respond-to(600px, "min-width") {
+      background-color: red;
+    }
+  }
+}
+
+.random {
+  .colorful {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    @for $i from 1 through 25 {
+      &:nth-child(#{ $i }) {
+        background-color: rgb(random(255), random(255), random(255));
+      }
+    }
+  }
+}
+
+// variable scope
+$mycolor: red;
+.scope {
+  p {
+    $color2: lightgray !global;
+    @if true {
+      $mycolor: blue;
+      color: $mycolor;
+    } @else {
+      $mycolor: green;
+      color: $mycolor;
+    }
+  }
+  .another-scope {
+    p {
+      background-color: $color2;
+    }
+  }
+}
+
+// layers by z-index
+
+.layers {
+  position: relative;
+  height: 400px;
+  .box {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    display: grid;
+    place-content: center;
+    &.box-1 {
+      top: 0;
+      left: 0;
+      background: rgba(236, 89, 89, .7);
+      z-index: layer(1);
+    }
+    &.box-2 {
+      top: 50px;
+      left: 150px;
+      background: rgba(98, 228, 156, .7);
+      z-index: layer(3);
+    }
+    &.box-3 {
+      top: 175px;
+      left: 50px;
+      background: rgba(89, 177, 236, .7);
+      z-index: layer(2);
+    }
+  }
+}

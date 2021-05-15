@@ -1,0 +1,36 @@
+$base-font-size: 16px;
+
+@function strip-unit($length) {
+  @return $length / (($length * 0) + 1);
+}
+
+@function rem($value) {
+  @debug "convert px-value to rem-value";
+  $value: strip-unit($value);
+  $base-font-size: strip-unit($base-font-size);
+  @return ($value / $base-font-size) * 1rem;
+}
+
+@function px-to-rem($value) {
+  @warn 'px-to-rem is deprecated. please use rem()';
+  @return rem($value);
+}
+
+// z-index
+$layers: (
+  behind: -1,
+  1: 10,
+  2: 20,
+  3: 30,
+  4: 40,
+  5: 50,
+  header: 100,
+  overlay: 200,
+  modal: 300,
+);
+@function layer($zindex) {
+  @if map-has-key($layers, $zindex) {
+    @return map-get($layers, $zindex);
+  } 
+  @warn 'layer: #{$zindex} is not found!'
+}

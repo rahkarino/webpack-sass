@@ -1,0 +1,11 @@
+$myColor: #e0e0e0;
+header {
+    background: url(../images/bg.png) repeat;
+    min-height: 200px;
+    display: grid;
+    place-content: center;
+}
+header p {
+    color: $myColor;
+    font-size: 30px;
+}
